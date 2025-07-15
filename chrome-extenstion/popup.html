@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eleven Prompt</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 350px;
+        min-height: 400px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .logo {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+
+      .title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        opacity: 0.8;
+      }
+
+      .status-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        backdrop-filter: blur(10px);
+      }
+
+      .status-title {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .status-description {
+        font-size: 12px;
+        opacity: 0.8;
+        line-height: 1.4;
+      }
+
+      .auth-form {
+        display: none;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        opacity: 0.9;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 13px;
+        backdrop-filter: blur(10px);
+      }
+
+      .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 8px;
+      }
+
+      .btn-primary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .btn-primary:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .stat-item {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .stat-label {
+        font-size: 11px;
+        opacity: 0.8;
+      }
+
+      .links {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .link {
+        display: block;
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+        padding: 8px 0;
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+      }
+
+      .link:hover {
+        opacity: 1;
+      }
+
+      .error {
+        background: rgba(231, 76, 60, 0.2);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      .success {
+        background: rgba(46, 204, 113, 0.2);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">✨</div>
+        <div class="title">AI Prompt Enhancer</div>
+        <div class="subtitle">Enhance your AI conversations</div>
+      </div>
+
+      <div id="auth-section">
+        <div class="status-card">
+          <div class="status-title">
+            <span>🔐</span>
+            <span>Authentication Required</span>
+          </div>
+          <div class="status-description">
+            Sign in to start enhancing your AI prompts with intelligent
+            suggestions.
+          </div>
+        </div>
+
+        <div class="auth-form" id="auth-form">
+          <div id="error-message"></div>
+          <div id="success-message"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button class="btn btn-primary" id="sign-in-btn">
+            <span id="sign-in-text">Sign In</span>
+            <span
+              id="sign-in-loading"
+              class="loading"
+              style="display: none"
+            ></span>
+          </button>
+        </div>
+
+        <button class="btn btn-primary" id="show-auth-form">Sign In</button>
+        <button class="btn btn-secondary" id="open-website">
+          Create Account
+        </button>
+      </div>
+
+      <div id="dashboard-section" style="display: none">
+        <div class="status-card">
+          <div class="status-title">
+            <span>✅</span>
+            <span>Connected</span>
+          </div>
+          <div class="status-description" id="user-info">
+            Welcome back! Your AI prompt enhancer is active.
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-number" id="suggestions-count">0</div>
+            <div class="stat-label">Suggestions</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="enhancements-count">0</div>
+            <div class="stat-label">Applied</div>
+          </div>
+        </div>
+
+        <div class="status-card" id="subscription-status">
+          <div class="status-title">
+            <span id="subscription-icon">⭐</span>
+            <span id="subscription-text">Free Plan</span>
+          </div>
+          <div class="status-description" id="subscription-description">
+            Upgrade to Premium for advanced suggestions and unlimited usage.
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" id="sign-out-btn">Sign Out</button>
+      </div>
+
+      <div class="links">
+        <a href="#" class="link" id="help-link">Help & Support</a>
+        <a href="#" class="link" id="privacy-link">Privacy Policy</a>
+      </div>
+    </div>
+
+    <script src="src/popup.js"></script>
+  </body>
+</html>

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { createClient } from "../../supabase/server";
 import { Button } from "./ui/button";
-import { User, UserCircle, Sparkles } from "lucide-react";
 import UserProfile from "./user-profile";
+import Image from "next/image";
 
 export default async function Navbar() {
   const supabase = createClient();
@@ -12,14 +12,19 @@ export default async function Navbar() {
   } = await (await supabase).auth.getUser();
 
   return (
-    <nav className="w-full border-b border-gray-200 bg-white py-2">
+    <nav className="w-full border-b border-white/10 bg-white/50 backdrop-blur-3xl py-2">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link
           href="/"
           prefetch
           className="text-xl font-bold flex items-center gap-2"
         >
-          <Sparkles className="w-6 h-6 text-purple-600" />
+          <Image
+            src="/logo_transparent.png"
+            alt="Logo"
+            width={32}
+            height={32}
+          />
           Eleven Prompt
         </Link>
         <div className="flex gap-4 items-center">
